@@ -7,6 +7,7 @@ ini_set('max_execution_time', 600);
  * @author Brasa
  */
 class Brasa_Dams_FTP_Update{
+
 	/**
 	 * @var array|boolean
 	 */
