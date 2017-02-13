@@ -109,6 +109,7 @@ class Brasa_Dams_FTP_Update{
 				continue;
 			}
 			if ( $i > $max_per_load ) {
+				update_option( sprintf( 'dams_stopped_%s', current_time( 'Y-m-d' ) ), $stopped_on );
 				break;
 			}
 			$product = ( array )$product;
@@ -117,11 +118,13 @@ class Brasa_Dams_FTP_Update{
 			if ( ! isset( $product[ '@attributes' ][ 'Code' ] ) ) {
 				$this->log( $log_message . 'não tem atributo Code no XML' );
 				$i++;
+				$stopped_on++;
 				continue;
 			}
 			if ( ! isset( $product[ '@attributes' ][ 'Code' ] ) ) {
 				$this->log( $log_message . 'não tem atributo Code no XML' );
 				$i++;
+				$stopped_on++;
 				continue;
 			}
 
@@ -130,6 +133,7 @@ class Brasa_Dams_FTP_Update{
 			if ( false === $product_id ) {
 				$this->log( $log_message . 'não foi encontrado produto com esse SKU no banco' );
 				$i++;
+				$stopped_on++;
 				continue;
 			}
 			$sku = get_post_meta( $product_id, '_sku', true );
@@ -138,6 +142,7 @@ class Brasa_Dams_FTP_Update{
 			if ( ! isset( $product['Warehouse']['@attributes']['Available'] ) ) {
 				$this->log( $log_message . 'não tem atributo Available no XML' );
 				$i++;
+				$stopped_on++;
 				continue;
 			}
 			$qty = $product['Warehouse']['@attributes']['Available'];
@@ -151,6 +156,7 @@ class Brasa_Dams_FTP_Update{
 			}
 			$this->log( $log_message . sprintf( 'Atualizado! {Quantidade anterior: %s} {Nova Quantidade: %s}', $qty_old, $qty ) );
 			$i++;
+			$stopped_on++;
 		}
 		$this->close_cron();
 	}
