@@ -80,7 +80,7 @@ class Brasa_Dams_FTP_Update{
     		$this->log_file = fopen( $file_location, 'a+' );
     	}
     	fwrite( $this->log_file, $message . "\n" );
-    	echo $message . '<br>';
+    	//echo $message . '<br>';
 	}
 	/**
 	 * Close open files and kill execution
@@ -102,29 +102,29 @@ class Brasa_Dams_FTP_Update{
 		$file = simplexml_load_string( $this->get_xml_file() );
 		$xml_data = (array) json_decode( json_encode( (array) $file ), true );
 		$max_per_load = 1000;
-		$i = 1;
-		$stopped_on = get_option( sprintf( 'dams_stopped_%s', current_time( 'Y-m-d' ) ), 1 );
-		foreach ( $xml_data[ 'Product'] as $product ) {
-			if ( $i < intval( $stopped_on ) ) {
-				continue;
-			}
-			if ( $i > $max_per_load ) {
-				update_option( sprintf( 'dams_stopped_%s', current_time( 'Y-m-d' ) ), $stopped_on );
+		$stopped_on = get_option( sprintf( 'dams_stopped_%s', current_time( 'Y-m-d' ) ), 0 );
+		if ( 'executed' === $stopped_on ) {
+			$this->close_cron();
+		}
+		$updated_products = intval( get_option( sprintf( 'dams_updated_%s', current_time( 'Y-m-d' ) ), 0 ) );
+		$count = 0;
+		$stopped_on = intval( $stopped_on );
+		for ( $i = intval( $stopped_on ); $count < $max_per_load; $i++ ) {
+			if( ! isset( $xml_data[ 'Product'][ $i ] ) ) {
 				break;
 			}
+			$product = $xml_data['Product'][ $i ];
+			$count++;
 			$product = ( array )$product;
 			$log_message = sprintf( 'Index[%s]: ', $i );
-			var_dump( $product );
 			if ( ! isset( $product[ '@attributes' ][ 'Code' ] ) ) {
 				$this->log( $log_message . 'não tem atributo Code no XML' );
 				$i++;
-				$stopped_on++;
 				continue;
 			}
 			if ( ! isset( $product[ '@attributes' ][ 'Code' ] ) ) {
 				$this->log( $log_message . 'não tem atributo Code no XML' );
 				$i++;
-				$stopped_on++;
 				continue;
 			}
 
@@ -133,7 +133,6 @@ class Brasa_Dams_FTP_Update{
 			if ( false === $product_id ) {
 				$this->log( $log_message . 'não foi encontrado produto com esse SKU no banco' );
 				$i++;
-				$stopped_on++;
 				continue;
 			}
 			$sku = get_post_meta( $product_id, '_sku', true );
@@ -142,7 +141,6 @@ class Brasa_Dams_FTP_Update{
 			if ( ! isset( $product['Warehouse']['@attributes']['Available'] ) ) {
 				$this->log( $log_message . 'não tem atributo Available no XML' );
 				$i++;
-				$stopped_on++;
 				continue;
 			}
 			$qty = $product['Warehouse']['@attributes']['Available'];
@@ -155,8 +153,15 @@ class Brasa_Dams_FTP_Update{
 				update_post_meta( $product_id, '_stock_status', 'outofstock');
 			}
 			$this->log( $log_message . sprintf( 'Atualizado! {Quantidade anterior: %s} {Nova Quantidade: %s}', $qty_old, $qty ) );
+			$updated_products++;
 			$i++;
-			$stopped_on++;
+		}
+		update_option( sprintf( 'dams_updated_%s', current_time( 'Y-m-d' ) ), $updated_products );
+		if ( $i >= count( $xml_data[ 'Product'] ) ) {
+			update_option( sprintf( 'dams_stopped_%s', current_time( 'Y-m-d' ) ), 'executed' );
+			$this->log( "--- END OF FILE (UPDATED PRODUCTS = $updated_products )---\n" );
+		} else {
+			update_option( sprintf( 'dams_stopped_%s', current_time( 'Y-m-d' ) ), $i );
 		}
 		$this->close_cron();
 	}
