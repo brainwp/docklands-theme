@@ -110,7 +110,7 @@ class Brasa_Dams_FTP_Update{
 		$updated_products = intval( get_option( sprintf( 'dams_updated_%s', current_time( 'Y-m-d' ) ), 0 ) );
 		$count = 0;
 		$stopped_on = intval( $stopped_on );
-		for ( $i = intval( $stopped_on ); $count < $max_per_load; $i++ ) {
+		for ( $i = intval( $stopped_on ); $count <= $max_per_load; $i++ ) {
 			if( ! isset( $xml_data[ 'Product'][ $i ] ) ) {
 				break;
 			}
