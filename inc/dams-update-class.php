@@ -153,8 +153,8 @@ class Brasa_Dams_FTP_Update{
 			} else {
 				update_post_meta( $product_id, '_stock_status', 'outofstock');
 			}
-			$this->log( $log_message . sprintf( 'Atualizado! {Quantidade anterior: %s} {Nova Quantidade: %s}', $qty_old, $qty ) );
 			$updated_products++;
+			$this->log( $log_message . sprintf( 'Atualizado! {Quantidade anterior: %s} {Nova Quantidade: %s}', $qty_old, $qty ) );
 		}
 		update_option( sprintf( 'dams_updated_%s', current_time( 'Y-m-d' ) ), $updated_products );
 		if ( $i >= count( $xml_data[ 'Product'] ) ) {
