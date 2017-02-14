@@ -88,7 +88,7 @@ class Brasa_Dams_FTP_Update{
 	 */
 	private function close_cron() {
 		if ( false !== $this->log_file ) {
-			$this->log( "---- STOPPED ---\n" );
+			$this->log( "\n---- STOPPED ---\n" );
 			fclose( $this->log_file );
 		}
 		die();
@@ -120,12 +120,6 @@ class Brasa_Dams_FTP_Update{
 			$log_message = sprintf( 'Index[%s]: ', $i );
 			if ( ! isset( $product[ '@attributes' ][ 'Code' ] ) ) {
 				$this->log( $log_message . 'não tem atributo Code no XML' );
-				$i++;
-				continue;
-			}
-			if ( ! isset( $product[ '@attributes' ][ 'Code' ] ) ) {
-				$this->log( $log_message . 'não tem atributo Code no XML' );
-				$i++;
 				continue;
 			}
 
@@ -133,7 +127,6 @@ class Brasa_Dams_FTP_Update{
 			$product_id = $this->get_product_by_sku( $product[ '@attributes' ][ 'Code' ] );
 			if ( false === $product_id ) {
 				$this->log( $log_message . 'não foi encontrado produto com esse SKU no banco' );
-				$i++;
 				continue;
 			}
 			$sku = get_post_meta( $product_id, '_sku', true );
@@ -141,7 +134,6 @@ class Brasa_Dams_FTP_Update{
 			$log_message = sprintf( 'Index[%s] - Code[%s] - WPID[%s]: ', $i, $product[ '@attributes' ][ 'Code' ], $product_id );
 			if ( ! isset( $product['Warehouse']['@attributes']['Available'] ) ) {
 				$this->log( $log_message . 'não tem atributo Available no XML' );
-				$i++;
 				continue;
 			}
 			$qty = $product['Warehouse']['@attributes']['Available'];
