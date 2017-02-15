@@ -150,6 +150,9 @@ class Brasa_Dams_FTP_Update{
 		}
 		update_option( sprintf( 'dams_updated_%s', current_time( 'Y-m-d' ) ), $updated_products );
 		if ( $i >= count( $xml_data[ 'Product'] ) ) {
+			if ( 0 === (int) $updated_products ) {
+				$this->close_cron();
+			}
 			update_option( sprintf( 'dams_stopped_%s', current_time( 'Y-m-d' ) ), 'executed' );
 			$this->log( "--- END OF FILE (UPDATED PRODUCTS = $updated_products )---\n" );
 		} else {
