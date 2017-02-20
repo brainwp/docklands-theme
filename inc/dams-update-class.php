@@ -43,7 +43,7 @@ class Brasa_Dams_FTP_Update{
     		//ftp_chdir( $ftp_connect, '/' );
     		$file_name = sprintf( '%s.xml', current_time( 'Y-m-d' ) );
     		$file_location = WP_CONTENT_DIR . '/dams/' . $file_name;
-    		if ( ! file_exists( $file_location ) ) {
+    		if ( ! file_exists( $file_location ) || 0 === (int) filesize( $file_location ) ) {
     			if( ! file_exists( WP_CONTENT_DIR . '/dams' ) ) {
     				mkdir( WP_CONTENT_DIR . '/dams', 0755 );
     			}
