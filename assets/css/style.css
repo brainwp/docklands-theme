@@ -3408,6 +3408,9 @@ div.sharedaddy h3.sd-title{
 		bottom: 20px;
 		right: 20px;
 	}
+	body.home #content {
+		display: inline;
+	}
 	/* Products */
 	.product_meta .sku_wrapper,
 	.product_meta .posted_in,
@@ -3437,6 +3440,9 @@ div.sharedaddy h3.sd-title{
 	/* Content */
 	#content {
 		margin-bottom: 100px;
+	}
+	body.home #content {
+		margin-bottom: 0;
 	}
 	.recentrly-items {
 		border: 0;
