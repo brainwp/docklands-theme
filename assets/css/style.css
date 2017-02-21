@@ -3417,7 +3417,7 @@ div.sharedaddy h3.sd-title{
 		width: 100%;
 	}
 	.woocommerce div.product form.cart .variations select {
-		width: 100px !important;
+		width: 100% !important;
 	}
 	.woocommerce-cart .cart-collaterals .cart_totals table {
 		margin-left: 0;
