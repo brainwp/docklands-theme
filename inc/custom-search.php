@@ -11,7 +11,7 @@ function advanced_search( $query ) {
     		$query->set( 'posts_per_page', $_GET[ 'per_page' ] );
     	}
     }
-    if ( is_search() && ! isset( $_REQUEST[ 'post_type'] ) ) {
+    if ( is_search() && ! is_shop() ) {
     	$query->set( 'post_type', array( 'post' ) );
     }
 }
