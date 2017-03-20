@@ -41,13 +41,13 @@ get_header();
 				    <div class="col-md-4 nopadding">
 					    <label><?php _e('Show','odin');?></label>
 					    <select>
-                            <option value="<?php echo get_permalink( woocommerce_get_page_id( 'shop' ) );?>">
+                            <option value="<?php echo add_query_arg( 'per_page', '12', $_SERVER['REQUEST_URI'] );?>">
                             	<?php _e('12 per page','odin');?>
                             </option>
-                            <option value="<?php echo get_permalink( woocommerce_get_page_id( 'shop' ) );?>?per_page=24" <?php if(isset($_GET['per_page'])) selected( $_GET['per_page'], 24 ); ?>>
+                            <option value="<?php echo add_query_arg( 'per_page', '24', $_SERVER['REQUEST_URI'] );?>" <?php if(isset($_GET['per_page'])) selected( $_GET['per_page'], 24 ); ?>>
                             	<?php _e('24 per page','odin');?>
                             </option>
-                            <option value="<?php echo get_permalink( woocommerce_get_page_id( 'shop' ) );?>?per_page=36" <?php if(isset($_GET['per_page'])) selected( $_GET['per_page'], 36 );?>>
+                            <option value="<?php echo add_query_arg( 'per_page', '36', $_SERVER['REQUEST_URI'] );?>" <?php if(isset($_GET['per_page'])) selected( $_GET['per_page'], 36 );?>>
                             	<?php _e('36 per page','odin');?>
                             </option>
 					    </select>
