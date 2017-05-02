@@ -467,7 +467,7 @@ h3.bg-title {
 }
 @media all and ( max-width: 500px ) {
 	.slider-home img {
-		min-height: none;
+		min-height: 1px;
 		max-height: none;
 	}
 	.slider-home .slick-dots {
