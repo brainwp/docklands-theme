@@ -22,10 +22,10 @@ html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:1
 		flex-flow: column-reverse wrap;
 	}
 	#content #secondary {
-		order:1;
+		order:2;
 	}
 	#content > div.col-sm-9.right {
-		order:3;
+		order:1;
 	}
 	.page-template-page-search-advanced #content {
 		display: inline-block;
